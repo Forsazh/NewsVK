@@ -1,0 +1,16 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="VKButtonTheme">
+        <item name="android:colorButtonNormal">@color/vk_color</item>
+        <item name="android:textColor">@color/cardview_light_background</item>
+        <item name="android:drawableLeft">@drawable/ic_ab_app</item>
+    </style>
+
+</resources>
