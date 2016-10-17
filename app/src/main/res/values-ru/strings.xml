@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Новости Вконтакте</string>
+    <string name="app_name">Simple VK</string>
     <string name="back">Назад</string>
     <string name="refresh">Обновить</string>
     <string name="showNews">Показать новости</string>
+    <string name="showBirthdays">Показать дни рождения</string>
     <string name="title_login">Войти</string>
     <string name="title_logout">Выйти</string>
-    <string name="total_likes">"Всего лайков = "</string>
+    <string name="total_likes">Всего лайков = </string>
 </resources>

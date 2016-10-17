@@ -1,4 +1,4 @@
-package com.forsazhgames.newsvk;
+package com.forsazhgames.simplevk.Models;
 
 import android.support.annotation.NonNull;
 

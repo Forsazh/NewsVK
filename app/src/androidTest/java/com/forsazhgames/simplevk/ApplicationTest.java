@@ -1,4 +1,4 @@
-package com.forsazhgames.newsvk;
+package com.forsazhgames.simplevk;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

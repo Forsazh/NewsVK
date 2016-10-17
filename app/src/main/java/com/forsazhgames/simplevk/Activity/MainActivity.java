@@ -1,4 +1,4 @@
-package com.forsazhgames.newsvk.Activity;
+package com.forsazhgames.simplevk.Activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.forsazhgames.newsvk.R;
+import com.forsazhgames.simplevk.R;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
@@ -16,7 +16,7 @@ import com.vk.sdk.api.VKError;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String[] scope = new String[]{VKScope.MESSAGES, VKScope.FRIENDS, VKScope.WALL};
-    private Button loginButton, showNewsButton, logoutButton;
+    private Button loginButton, showNewsButton, showBirthdaysButton, logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,24 +30,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initializeButtons() {
+        loginButton = (Button) findViewById(R.id.login_button);
+        loginButton.setOnClickListener(this);
+
         showNewsButton = (Button) findViewById(R.id.showNews_button);
         showNewsButton.setOnClickListener(this);
 
+        showBirthdaysButton = (Button) findViewById(R.id.showBirthdays_button);
+        showBirthdaysButton.setOnClickListener(this);
+
         logoutButton = (Button) findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(this);
-
-        loginButton = (Button) findViewById(R.id.login_button);
-        loginButton.setOnClickListener(this);
     }
 
     private void changeVisibility() {
         if (loginButton.getVisibility() == View.VISIBLE) {
             loginButton.setVisibility(View.GONE);
             showNewsButton.setVisibility(View.VISIBLE);
+            showBirthdaysButton.setVisibility(View.VISIBLE);
             logoutButton.setVisibility(View.VISIBLE);
         } else {
             loginButton.setVisibility(View.VISIBLE);
             showNewsButton.setVisibility(View.GONE);
+            showBirthdaysButton.setVisibility(View.GONE);
             logoutButton.setVisibility(View.GONE);
         }
     }
@@ -77,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.showNews_button:
                 this.startActivity(new Intent(this, NewsActivity.class));
+                break;
+            case R.id.showBirthdays_button:
+                this.startActivity(new Intent(this, BirthdayActivity.class));
                 break;
             case R.id.logout_button:
                 VKSdk.logout();

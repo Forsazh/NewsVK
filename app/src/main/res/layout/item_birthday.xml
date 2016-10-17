@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cvNews"
+    android:id="@+id/cvBirthday"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp">
@@ -12,26 +12,27 @@
         android:padding="8dp">
 
         <ImageView
-            android:id="@+id/imageViewNews"
+            android:id="@+id/imageViewBirthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
-            android:id="@+id/dateViewNews"
+            android:id="@+id/nameViewBirthday"
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/imageViewBirthday" />
+
+        <TextView
+            android:id="@+id/bDateViewBirthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
+            android:layout_below="@id/nameViewBirthday"
             android:textColor="@color/vk_color" />
-
-        <TextView
-            android:id="@+id/textViewNews"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/imageViewNews" />
 
     </RelativeLayout>
 

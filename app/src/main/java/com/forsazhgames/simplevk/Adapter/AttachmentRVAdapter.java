@@ -1,16 +1,13 @@
-package com.forsazhgames.newsvk.Adapter;
+package com.forsazhgames.simplevk.Adapter;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.forsazhgames.newsvk.R;
+import com.forsazhgames.simplevk.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

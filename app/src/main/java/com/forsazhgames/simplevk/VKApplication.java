@@ -1,9 +1,9 @@
-package com.forsazhgames.newsvk;
+package com.forsazhgames.simplevk;
 
 import android.app.Application;
 import android.content.Intent;
 
-import com.forsazhgames.newsvk.Activity.MainActivity;
+import com.forsazhgames.simplevk.Activity.MainActivity;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKAccessTokenTracker;
 import com.vk.sdk.VKSdk;

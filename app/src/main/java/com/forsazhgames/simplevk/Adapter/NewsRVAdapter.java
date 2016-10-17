@@ -1,4 +1,4 @@
-package com.forsazhgames.newsvk.Adapter;
+package com.forsazhgames.simplevk.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -9,15 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.forsazhgames.newsvk.News;
-import com.forsazhgames.newsvk.R;
+import com.forsazhgames.simplevk.Models.News;
+import com.forsazhgames.simplevk.R;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
  * Created by Forsazhrus on 20.09.2016.
  */
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewsViewHolder> {
+public class NewsRVAdapter extends RecyclerView.Adapter<NewsRVAdapter.NewsViewHolder> {
 
     public static class NewsViewHolder extends RecyclerView.ViewHolder {
 
@@ -27,17 +27,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewsViewHolder> {
 
         NewsViewHolder(View itemView) {
             super(itemView);
-            cv = (CardView) itemView.findViewById(R.id.cv);
-            photo = (ImageView) itemView.findViewById(R.id.imageView);
-            date = (TextView) itemView.findViewById(R.id.dateView);
-            text = (TextView) itemView.findViewById(R.id.textView);
+            cv = (CardView) itemView.findViewById(R.id.cvNews);
+            photo = (ImageView) itemView.findViewById(R.id.imageViewNews);
+            date = (TextView) itemView.findViewById(R.id.dateViewNews);
+            text = (TextView) itemView.findViewById(R.id.textViewNews);
         }
     }
 
     List<News> news;
     Context context;
 
-    public RVAdapter(Context context, List<News> news) {
+    public NewsRVAdapter(Context context, List<News> news) {
         this.context = context;
         this.news = news;
     }

@@ -1,4 +1,4 @@
-package com.forsazhgames.newsvk;
+package com.forsazhgames.simplevk;
 
 import org.junit.Test;
 

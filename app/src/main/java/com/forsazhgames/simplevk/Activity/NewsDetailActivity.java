@@ -1,4 +1,4 @@
-package com.forsazhgames.newsvk.Activity;
+package com.forsazhgames.simplevk.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.forsazhgames.newsvk.Adapter.AttachmentRVAdapter;
-import com.forsazhgames.newsvk.R;
+import com.forsazhgames.simplevk.Adapter.AttachmentRVAdapter;
+import com.forsazhgames.simplevk.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

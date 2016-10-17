@@ -1,4 +1,4 @@
-package com.forsazhgames.newsvk.Activity;
+package com.forsazhgames.simplevk.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,10 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
-import com.forsazhgames.newsvk.News;
-import com.forsazhgames.newsvk.R;
-import com.forsazhgames.newsvk.Adapter.RVAdapter;
-import com.forsazhgames.newsvk.RecyclerItemClickListener;
+import com.forsazhgames.simplevk.Models.News;
+import com.forsazhgames.simplevk.R;
+import com.forsazhgames.simplevk.Adapter.NewsRVAdapter;
+import com.forsazhgames.simplevk.RecyclerItemClickListener;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
@@ -41,7 +41,7 @@ public class NewsActivity extends Activity implements View.OnClickListener {
     private Button back, refresh;
     private List<News> news;
     private RecyclerView rv;
-    private RVAdapter adapter;
+    private NewsRVAdapter adapter;
     private LinearLayoutManager llm;
     private int totalItemCount, lastVisibleItem;
 
@@ -58,7 +58,7 @@ public class NewsActivity extends Activity implements View.OnClickListener {
     }
 
     private void initRV() {
-        rv = (RecyclerView) findViewById(R.id.rv);
+        rv = (RecyclerView) findViewById(R.id.rvNews);
         rv.setLayoutManager(llm);
         rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -98,7 +98,6 @@ public class NewsActivity extends Activity implements View.OnClickListener {
         refresh.setOnClickListener(this);
     }
 
-
     private void initializeNews() {
         isInit = true;
         startValue = "";
@@ -109,7 +108,7 @@ public class NewsActivity extends Activity implements View.OnClickListener {
     }
 
     private void updateAdapter() {
-        adapter = new RVAdapter(NewsActivity.this, news);
+        adapter = new NewsRVAdapter(NewsActivity.this, news);
         rv.setAdapter(adapter);
     }
 

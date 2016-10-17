@@ -1,10 +1,11 @@
 <resources>
     <integer name="com_vk_sdk_AppId">5629808</integer>
-    <string name="app_name">NewsVK</string>
+    <string name="app_name">Simple VK</string>
     <string name="title_login">Login</string>
     <string name="showNews">Show news</string>
+    <string name="showBirthdays">Show birthdays</string>
     <string name="title_logout">Logout</string>
     <string name="refresh">Refresh</string>
     <string name="back">Back</string>
-    <string name="total_likes">"Total likes = "</string>
+    <string name="total_likes">Total likes = </string>
 </resources>
