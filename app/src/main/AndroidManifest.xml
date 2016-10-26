@@ -17,9 +17,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.forsazhgames.simplevk.Activity.NewsActivity" />
-        <activity android:name="com.forsazhgames.simplevk.Activity.NewsDetailActivity" />
-        <activity android:name="com.forsazhgames.simplevk.Activity.BirthdayActivity" />
+        <activity android:name="com.forsazhgames.simplevk.Activity.NewsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.forsazhgames.simplevk.Activity.NewsDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.forsazhgames.simplevk.Activity.BirthdayActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.vk.sdk.VKServiceActivity"
             android:label="ServiceActivity"

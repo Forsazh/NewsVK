@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.forsazhgames.simplevk.R;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,10 +22,12 @@ public class AttachmentRVAdapter extends RecyclerView.Adapter<AttachmentRVAdapte
     public static class AttachmentViewHolder extends RecyclerView.ViewHolder {
 
         ImageView attachment;
+        ProgressBar progressBar;
 
         public AttachmentViewHolder(View view) {
             super(view);
             attachment = (ImageView) view.findViewById(R.id.attachmentImageView);
+            progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         }
     }
 
@@ -47,8 +51,18 @@ public class AttachmentRVAdapter extends RecyclerView.Adapter<AttachmentRVAdapte
     }
 
     @Override
-    public void onBindViewHolder(AttachmentViewHolder holder, int i) {
-        Picasso.with(context).load(imageUrls.get(i)).into(holder.attachment);
+    public void onBindViewHolder(final AttachmentViewHolder holder, int i) {
+        Picasso.with(context).load(imageUrls.get(i)).into(holder.attachment, new Callback() {
+            @Override
+            public void onSuccess() {
+                holder.progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError() {
+                holder.progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override

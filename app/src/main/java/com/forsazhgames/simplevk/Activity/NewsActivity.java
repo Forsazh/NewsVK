@@ -3,10 +3,13 @@ package com.forsazhgames.simplevk.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.forsazhgames.simplevk.Models.News;
 import com.forsazhgames.simplevk.R;
@@ -34,16 +37,21 @@ import java.util.Map;
 public class NewsActivity extends Activity implements View.OnClickListener {
 
     final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    public static final int DOWNLOADING = 0, DOWNLOADED = 1;
     final int COUNT = 100;
-    private boolean isInit, startedDownload;
+    private boolean fromStart, startedDownload;
     private VKRequest request;
     private String startValue;
-    private Button back, refresh;
+    private Button refresh;
+    private ProgressBar progressBar;
+    private Handler handler;
     private List<News> news;
     private RecyclerView rv;
     private NewsRVAdapter adapter;
     private LinearLayoutManager llm;
     private int totalItemCount, lastVisibleItem;
+    private Thread thread;
+    private boolean inProcess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +59,29 @@ public class NewsActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.news);
 
         llm = new LinearLayoutManager(this);
+        initHandler();
         initRV();
-        initializeButtons();
+        initializeViews();
         initializeNews();
         updateAdapter();
+    }
+
+    private void initHandler() {
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case DOWNLOADING:
+                        refresh.setEnabled(false);
+                        progressBar.setVisibility(View.VISIBLE);
+                        break;
+                    case DOWNLOADED:
+                        refresh.setEnabled(true);
+                        progressBar.setVisibility(View.GONE);
+                        break;
+                }
+            }
+        };
     }
 
     private void initRV() {
@@ -67,7 +94,7 @@ public class NewsActivity extends Activity implements View.OnClickListener {
                 super.onScrolled(recyclerView, dx, dy);
                 totalItemCount = llm.getItemCount();//сколько всего элементов
                 lastVisibleItem = llm.findLastVisibleItemPosition();//какая позиция последнего элемента на экране
-                if (!startedDownload && lastVisibleItem == totalItemCount - 1) {
+                if (!startedDownload && lastVisibleItem == totalItemCount - 1 && !inProcess) {
                     startedDownload = true;
                     downloadMoreNews();
                 } else {
@@ -90,18 +117,21 @@ public class NewsActivity extends Activity implements View.OnClickListener {
         }));
     }
 
-    private void initializeButtons() {
-        back = (Button) findViewById(R.id.back_button);
-        back.setOnClickListener(this);
-
+    private void initializeViews() {
         refresh = (Button) findViewById(R.id.refresh_button);
         refresh.setOnClickListener(this);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
     }
 
     private void initializeNews() {
-        isInit = true;
+        handler.sendEmptyMessage(DOWNLOADING);
+        fromStart = true;
         startValue = "";
         news = new ArrayList<>();
+        if (request != null) {
+            request.cancel();
+        }
         request = new VKRequest("newsfeed.get",
                 VKParameters.from(VKApiConst.FILTERS, "post", VKApiConst.COUNT, COUNT));
         downloadNews();
@@ -116,9 +146,6 @@ public class NewsActivity extends Activity implements View.OnClickListener {
     public void onClick(View view) {
         int buttonId = view.getId();
         switch (buttonId) {
-            case R.id.back_button:
-                this.startActivity(new Intent(this, MainActivity.class));
-                break;
             case R.id.refresh_button:
                 initializeNews();
                 break;
@@ -126,7 +153,8 @@ public class NewsActivity extends Activity implements View.OnClickListener {
     }
 
     private void downloadMoreNews() {
-        isInit = false;
+        handler.sendEmptyMessage(DOWNLOADING);
+        fromStart = false;
         request = new VKRequest("newsfeed.get",
                 VKParameters.from(VKApiConst.FILTERS, "post",
                         VKApiConst.COUNT, COUNT, "start_from", startValue));
@@ -134,32 +162,42 @@ public class NewsActivity extends Activity implements View.OnClickListener {
     }
 
     private void downloadNews() {
-        request.executeWithListener(new VKRequest.VKRequestListener() {
-            @Override
-            public void onComplete(VKResponse response) {
-                super.onComplete(response);
-                Map<Long, String> profileID, groupID;
-                profileID = new HashMap<>();
-                groupID = new HashMap<>();
-                int prevSize = news.size();
-                try {
-                    JSONObject jsonResponse = response.json.getJSONObject("response");
-                    if (!startValue.equals(jsonResponse.getString("next_from"))) {
-                        putInMap(jsonResponse.getJSONArray("profiles"), profileID);
-                        putInMap(jsonResponse.getJSONArray("groups"), groupID);
-                        startValue = jsonResponse.getString("next_from");
-                        prepareNews(jsonResponse.getJSONArray("items"), profileID, groupID);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        if (!inProcess) {
+            thread = new Thread(new Runnable() {
+                public void run() {
+                    inProcess = true;
+                    request.executeWithListener(new VKRequest.VKRequestListener() {
+                        @Override
+                        public void onComplete(VKResponse response) {
+                            super.onComplete(response);
+                            Map<Long, String> profileID, groupID;
+                            profileID = new HashMap<>();
+                            groupID = new HashMap<>();
+                            int prevSize = news.size();
+                            try {
+                                JSONObject jsonResponse = response.json.getJSONObject("response");
+                                if (!startValue.equals(jsonResponse.getString("next_from"))) {
+                                    putInMap(jsonResponse.getJSONArray("profiles"), profileID);
+                                    putInMap(jsonResponse.getJSONArray("groups"), groupID);
+                                    startValue = jsonResponse.getString("next_from");
+                                    prepareNews(jsonResponse.getJSONArray("items"), profileID, groupID);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            if (fromStart) {
+                                updateAdapter();
+                            } else {
+                                rv.getAdapter().notifyItemRangeInserted(prevSize, news.size());
+                            }
+                            handler.sendEmptyMessage(DOWNLOADED);
+                            inProcess = false;
+                        }
+                    });
                 }
-                if (isInit) {
-                    updateAdapter();
-                } else {
-                    rv.getAdapter().notifyItemRangeInserted(prevSize, news.size());
-                }
-            }
-        });
+            });
+            thread.start();
+        }
     }
 
     private void putInMap(JSONArray array, Map map) throws JSONException {
